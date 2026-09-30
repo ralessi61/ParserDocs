@@ -54,7 +54,7 @@ def cmd_search(args: argparse.Namespace) -> int:
         print(f"    ID:       {doc.doc_id}")
         print(f"    Format:   {doc.format.upper()} | Words: {doc.word_count} | Date: {doc.date or 'N/A'}")
         print(f"    Path:     {doc.source_path}")
-        if args.preview or args.verbose:
+        if args.preview:
             print(f"    Preview:  {doc.preview}")
         print()
     return 0
