@@ -1,0 +1,11 @@
+Note di Rilascio Versione Gestionale ERP v2.4 (Anno 2026)
+
+Data: 2026-05-18
+Proprietario: Divisione Sviluppo Applicativo
+Copyright © 2026 Azienda S.p.A. - Tutti i diritti riservati.
+
+Modifiche Principali:
+- Aggiornate le aliquote IVA per la fatturazione elettronica e le fatture d'élite.
+- Corretto bug nel calcolo della ritenuta d'acconto per i lavoratori autonomi con imposta al 20%.
+- Aggiunta compatibilità con i terminali portatili di magazzino a temperatura -10°C.
+- Ottimizzata la procedura di chiusura contabile mensile per le società controllate.

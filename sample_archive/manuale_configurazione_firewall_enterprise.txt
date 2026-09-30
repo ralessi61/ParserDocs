@@ -1,0 +1,68 @@
+Manuale di Configurazione e Hardening Firewall Perimetrale Enterprise
+
+Data di Pubblicazione: 2026-01-10
+Versione: 4.2
+Autore: Reparto Ingegneria di Rete e Sicurezza delle Informazioni
+Ambito: Appliance Firewall Cluster FortiGate e Palo Alto Networks
+
+SEZIONE 1 - INTRODUZIONE E PRINCIPI GUIDA
+Il presente manuale definisce le linee guida architetturali e operative per la configurazione dei sistemi firewall posizionati a presidio del perimetro aziendale e delle connessioni verso reti terze, cloud pubblici e sedi secondarie.
+Tutti i componenti di rete devono essere configurati secondo il principio di minimo privilegio (Default Deny), disabilitando ogni servizio o porta non esplicitamente giustificata da comprovate esigenze di business.
+La gestione dei flussi deve prevedere la totale separazione tra il piano di controllo (Control Plane), il piano di gestione (Management Plane) e il piano di inoltro dei pacchetti (Data Plane).
+
+SEZIONE 2 - TOPOLOGIA DI RETE E ZONIZZAZIONE LOGICA
+L'infrastruttura perimetrale implementa una suddivisione rigida in zone di sicurezza, ciascuna caratterizzata da specifici livelli di fiducia (Trust Levels):
+- ZONA UNTRUST (Livello 0): Interfaccia diretta con i router BGP dei carrier Internet. Nessun traffico in ingresso è consentito a eccezione delle terminazioni VPN IPsec e dei flussi HTTPS verso i Reverse Proxy certificati.
+- ZONA DMZ ESTERNA (Livello 10): Ospita i server e i servizi accessibili dall'esterno, inclusi i portali web pubblici, i server DNS autoritativi e i gateway di posta elettronica. Nessun server posizionato in questa zona può avviare connessioni arbitrarie verso le zone interne.
+- ZONA DMZ APPLICATIVA (Livello 20): Segmento intermedio riservato ai server di middleware, worker asincroni e code RabbitMQ. La comunicazione con i database avviene unicamente tramite canali TLS autenticati.
+- ZONA TRUST INTERNA (Livello 50): Rete LAN aziendale destinata alle workstation dei dipendenti, endpoint Wi-Fi 802.1X e stampanti di rete.
+- ZONA CORE DATACENTER (Livello 80): Segmento contenente i cluster di virtualizzazione, hypervisor, blade server e appliance di storage SAN/NAS.
+- ZONA MANAGEMENT OOB (Livello 100): Rete Out-Of-Band completamente isolata, riservata alle interfacce IPMI, iDRAC, console seriali e porte di gestione degli apparati di rete. L'accesso a questo segmento è permesso esclusivamente tramite postazioni bastion host dedicate con autenticazione a più fattori.
+
+SEZIONE 3 - CONFIGURAZIONE CLUSTER AD ALTA AFFIDABILITÀ (HIGH AVAILABILITY)
+I firewall operano in modalità Active/Passive con sincronizzazione continua dello stato delle sessioni (Stateful Failover):
+1. Interfacce di Heartbeat: devono essere utilizzate almeno due connessioni fisiche dirette a 10Gbps prive di switch intermedi.
+2. Monitoraggio delle Interfacce: qualora l'interfaccia WAN primaria subisca un degrado del link o una perdita di pacchetti superiore al 20%, il cluster deve forzare la transizione del ruolo Master al nodo secondario entro 1.5 secondi.
+3. Sincronizzazione Tabelle di Routing: i protocolli OSPF e BGP devono essere configurati con tempi di graceful restart attivi per evitare oscillazioni delle rotte durante gli switchover programmati.
+
+SEZIONE 4 - REGOLE DI FILTRO E ISPEZIONE DEI PACCHETTI
+Tutte le policy di sicurezza devono rispettare la convenzione standard di denominazione:
+[ZONA_SORGENTE]_[ZONA_DESTINAZIONE]_[SERVIZIO]_[ID_REGOLA]
+
+Esempio di sequenza regole:
+- Regola 001: Blocca tutto il traffico proveniente da indirizzi IP inseriti nelle Blacklist Threat Intelligence globali (feed automatici aggiornati ogni ora).
+- Regola 002: Blocca pacchetti con flag TCP malformati (SYN-FIN, NULL scan, XMAS scan).
+- Regola 003: Consenti traffico DNS solo verso i resolver interni 10.20.1.10 e 10.20.1.11.
+- Regola 004: Consenti traffico NTP solo verso l'orologio atomico aziendale.
+- Regola 005: Ispezione profonda dei certificati SSL/TLS per tutto il traffico web originato dagli utenti interni verso l'esterno, applicando categorizzazione URL e blocco dei domini di categoria Malware, Phishing e Crypto Mining.
+
+SEZIONE 5 - GESTIONE DEI TUNNEL IPSEC SITE-TO-SITE
+I collegamenti crittografati verso i fornitori cloud (AWS Direct Connect, Azure ExpressRoute) e le filiali periferiche devono adottare i seguenti parametri crittografici minimi:
+- Fase 1 IKEv2:
+  * Algoritmo di Cifratura: AES-256-GCM
+  * Funzione Hash: SHA-384
+  * Gruppo Diffie-Hellman: Group 19 (256-bit elliptic curve) o Group 21 (521-bit)
+  * Durata Sessione IKE: 28.800 secondi (8 ore)
+  * Autenticazione: Certificati digitali X.509 emessi dalla CA aziendale interna
+- Fase 2 IPsec ESP:
+  * Protocollo di Incapsulamento: ESP (Encapsulating Security Payload)
+  * Cifratura: AES-256-GCM
+  * Perfect Forward Secrecy (PFS): Abilitato su Gruppo DH 19
+  * Durata Sessione IPsec: 3.600 secondi (1 ora)
+  * Anti-Replay Window: Dimensione 1024 pacchetti
+
+SEZIONE 6 - PREVENZIONE DELLE INTRUSIONI (IPS/IDS) E ANTIVIRUS DI RETE
+I profili IPS devono essere attivati su tutte le regole che consentono flussi tra livelli di fiducia differenti:
+1. Firme Critiche e Alte: Azione automatica Drop Packet e invio notifica immediata al SIEM.
+2. Firme Medie e Basse: Azione di Alert con registrazione nei log di telemetria.
+3. Protezione da Attacchi DoS/DDoS: Soglie di rate-limiting impostate a 10.000 pacchetti SYN al secondo per IP sorgente esterno. Superata tale soglia scatta il SYN-Cookie validation.
+4. Motore Antivirus di Flusso: Scansione euristica degli stream HTTP, SMTP, FTP e SMB per l'identificazione di allegati malevoli con dimensione massima esaminabile pari a 50 Megabyte.
+
+SEZIONE 7 - MANUTENZIONE PERIODICA, AUDIT E LOGGING
+- Backup delle Configurazioni: Esecuzione automatica notturna dello snapshot criptato inviato tramite protocollo SFTP sicuro a un server di backup isolato.
+- Revisione Semestrale delle Policy: Ogni sei mesi il team di sicurezza deve analizzare le regole firewall che non hanno registrato hit o transito di pacchetti negli ultimi 90 giorni, procedendo alla loro disabilitazione dopo notifica ai proprietari del servizio.
+- Aggiornamento Firme e Firwmare: Le patch di sicurezza con punteggio CVSS superiore a 8.0 devono essere applicate in finestra di manutenzione entro 14 giorni di calendario dalla loro pubblicazione ufficiale.
+- Raccolta dei Log: Tutti i log di traffico, eventi di sistema e allarmi IPS devono essere inoltrati in streaming continuo tramite protocollo Syslog TLS (porta TCP 6514) al cluster centrale di monitoraggio.
+
+SEZIONE 8 - DISPOSIZIONI FINALI
+La mancata conformità alle prescrizioni del presente manuale costituisce violazione delle policy di sicurezza delle informazioni aziendali ed espone l'infrastruttura a rischi di compromissione sistemica. Per deroghe temporanee è necessario sottomettere una richiesta formale di Change Management controfirmata dal Chief Information Security Officer.

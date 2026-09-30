@@ -1,0 +1,19 @@
+Policy Aziendale di Conservazione e Rotazione dei Log di Sistema
+
+Data Approvazione: 2026-01-20
+Riferimento Normativo: Regolamento UE 2016/679 (GDPR), Provvedimento Amministratori di Sistema
+
+1. SCOPO E CAMPO DI APPLICAZIONE
+La presente policy stabilisce i requisiti minimi obbligatori per la raccolta, la cifratura, l'archiviazione temporale e la cancellazione sicura dei log generati dai sistemi operativi, apparati di rete, database e piattaforme applicative dell'organizzazione.
+
+2. TEMPI DI CONSERVAZIONE (RETENTION PERIODS)
+- Log di accesso degli Amministratori di Sistema: conservazione minima obbligatoria di 6 mesi su storage WORM (Write Once, Read Many).
+- Log di autenticazione e sicurezza perimetrale (Firewall, VPN, Reverse Proxy): 12 mesi con aggregazione settimanale su cluster ELK/Opensearch.
+- Log applicativi di debug e tracciamento transazioni: 30 giorni, seguiti da eliminazione automatica.
+- Audit trail contabile e fiscale: 10 anni secondo normativa civilistica.
+
+3. INTEGRITÀ E CIFRATURA
+Tutti i log destinati all'archiviazione fredda a lungo termine devono essere cifrati a riposo mediante algoritmo AES-256 e protetti tramite firma hash SHA-256 giornaliera calcolata automaticamente alle ore 02:00 UTC.
+
+4. RESPONSABILITÀ
+Il Responsabile dei Sistemi Informativi è incaricato di verificare con cadenza semestrale l'effettiva integrità degli archivi e la validità delle procedure di ripristino.

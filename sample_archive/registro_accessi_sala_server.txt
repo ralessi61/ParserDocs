@@ -1,0 +1,28 @@
+Registro Mensile Autorizzazioni Accesso Sala Macchine
+
+Data: 2026-06-11
+Sede: Datacenter Primario - Piano Interrato - Gabbia Rack 04
+Supervisore: Ing. R. Colombo
+
+ELENCO ACCESSI REGISTRATI NEL MESE:
+
+1. Data: 2026-06-03 - Ore: 10:15
+   Operatore: Marco Moretti (Tecnico Telecomunicazioni)
+   Ditta Esterna: Fastweb SpA
+   Motivo: Sostituzione modulo SFP+ 10Gbps su switch dorsale B.
+   Badge Rilasciato: GUEST-088. Termine intervento: ore 12:40.
+
+2. Data: 2026-06-07 - Ore: 14:00
+   Operatore: Sara Pellegrini (Senior Storage Engineer)
+   Azienda: Interna
+   Motivo: Manutenzione programmata enclosure disco SAN NetApp FAS8300.
+   Badge Rilasciato: EMP-1004. Termine intervento: ore 17:30.
+
+3. Data: 2026-06-11 - Ore: 09:30
+   Operatore: Luca Ferri (Impiantista Elettrico)
+   Ditta Esterna: ElettroQuadri Srl
+   Motivo: Verifica periodica batterie gruppo di continuità UPS Schneider Electric.
+   Badge Rilasciato: GUEST-092. Termine intervento: ore 11:15.
+
+NOTE DI CHIUSURA:
+Nessun allarme antincendio o sensore termico scattato durante le lavorazioni. Cabine rack richiuse e sigillate con chiave meccanica.

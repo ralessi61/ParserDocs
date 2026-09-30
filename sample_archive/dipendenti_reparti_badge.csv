@@ -1,0 +1,7 @@
+Matricola;Cognome_Nome;Reparto;Sede;Livello_Accesso;Data_Attivazione
+EMP-1001;Rossi Mario;Sistemi Informativi;Milano HQ;Livello 4 (Datacenter);2026-01-10
+EMP-1002;Bianchi Laura;Ingegneria Software;Torino R&D;Livello 2 (Uffici);2026-01-15
+EMP-1003;Verdi Giuseppe;Sicurezza Informatica;Milano HQ;Livello 4 (Datacenter);2026-02-01
+EMP-1004;Neri Stefano;Supporto Reti;Roma Hub;Livello 3 (Sale Tecniche);2026-02-15
+EMP-1005;Ferrari Elena;Risorse Umane;Milano HQ;Livello 1 (Generale);2026-03-01
+EMP-1006;Esposito Antonio;Logistica e Magazzino;VTE Voltri;Livello 2 (Uffici);2026-03-10

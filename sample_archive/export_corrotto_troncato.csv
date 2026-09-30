@@ -1,0 +1,6 @@
+ID,Transazione,Data,Importo_EUR,Stato_Elaborazione,Codice_Fiscale
+TX-001,Bonifico SEPA,2026-03-01,1500.00,Completato,RSSMRA80A01F205X
+TX-002,Addebito SDD
+TX-003,Storno POS,2026-03-02
+TX-004,Pagamento F24
+TX-005,Accredito Stipendio

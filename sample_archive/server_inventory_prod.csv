@@ -1,0 +1,8 @@
+Hostname,IP_Address,Subnet,OS,RAM_GB,CPU_Cores,Environment,Status,Last_Audited
+srv-app-prod-01,10.20.10.11,10.20.10.0/24,Debian 12,64,16,Production,Active,2026-02-20
+srv-app-prod-02,10.20.10.12,10.20.10.0/24,Debian 12,64,16,Production,Active,2026-02-20
+srv-db-master,10.20.20.5,10.20.20.0/24,RHEL 9.3,256,64,Production,Active,2026-02-18
+srv-db-replica,10.20.20.6,10.20.20.0/24,RHEL 9.3,256,64,Production,Active,2026-02-18
+srv-redis-cache,10.20.15.20,10.20.15.0/24,Ubuntu 26.04,128,32,Production,Active,2026-01-15
+srv-vpn-gw-01,10.20.5.2,10.20.5.0/24,Alpine Linux,16,4,DMZ,Active,2026-03-01
+srv-monitor-elk,10.20.30.100,10.20.30.0/24,Ubuntu 26.04,96,24,Monitoring,Maintenance,2026-02-28

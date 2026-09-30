@@ -1,0 +1,26 @@
+Verbale Riunione Comitato Sicurezza IT
+
+Data: 2026-04-10
+Luogo: Sala Riunioni B e Microsoft Teams
+Partecipanti: M. Rossi (CISO), L. Bianchi (DevOps Lead), G. Verdi (Data Protection Officer), S. Neri (Network Admin)
+
+ORDINE DEL GIORNO
+1. Aggiornamento piano adeguamento NIS2 e audit trimestrale.
+2. Risultanze dei penetration test condotti sul portale fornitori esterno.
+3. Revisione scadenze certificati SSL/TLS wildcard in scadenza a fine trimestre.
+
+DISCUSSIONE ED ESITO DEI PUNTI
+
+Punto 1 - Conformità NIS2:
+Il DPO espone lo stato di avanzamento della mappatura dei fornitori terzi critici. Rimangono da formalizzare tre accordi di servizio relativi alla conservazione dei log applicativi. Termine fissato per il completamento: 15 maggio 2026.
+
+Punto 2 - Penetration Test Portale Fornitori:
+La società di audit esterna ha evidenziato due vulnerabilità di media severità legate a policy restrittive mancanti nell'header Content-Security-Policy (CSP) e a un timeout sessione eccessivamente lungo (120 minuti). Il team DevOps provvederà a rilasciare la fix in produzione entro venerdì prossimo, riducendo il token lifespan a 30 minuti di inattività.
+
+Punto 3 - Rinnovo Certificati:
+Tutti i certificati di secondo livello per i domini corporate sono stati migrati sotto gestione automatizzata con ACME/Let's Encrypt tramite proxy Traefik, azzerando il rischio di scadenza manuale.
+
+PROSSIMI PASSI (ACTION ITEMS)
+- L. Bianchi: chiusura ticket SEC-409 entro il 2026-04-20.
+- S. Neri: isolamento subnet legacy DMZ con nuove regole firewall perimetrali.
+- M. Rossi: relazione per il consiglio di amministrazione entro fine mese.
