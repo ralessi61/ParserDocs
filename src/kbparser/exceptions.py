@@ -36,3 +36,4 @@ class CorruptedFileError(ParserError):
 class FileAccessError(ParserError):
     """Raised when filesystem permissions prevent reading a document."""
     pass
+
